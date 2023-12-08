@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $location = $_POST["location"];
 
     // Insert the new user into the database with the determined role_id
-    $sql = "INSERT INTO pickup_location (location) 
+    $sql = "INSERT INTO pickup_location (address) 
             VALUES ('$location')";
 
     if ($conn->query($sql) === TRUE) {

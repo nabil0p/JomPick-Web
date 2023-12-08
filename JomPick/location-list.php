@@ -78,7 +78,7 @@ include 'api/db_connection.php'; // Include your database connection
                 <div class="card mb-4">
                     <div class="card-header d-flex align-items-center justify-content-between">
                         <div><i class="fas fa-table me-1"></i> Location List</div>
-                        <div class="small text-white"><a href="location-register.php" class="btn btn-primary btn-sm" data-toggle="modal"><i class="fa fa-plus-square"></i>&nbsp;&nbsp;Register</a></div>
+                        <div class="small text-white"><a href="location-register.php" class="btn btn-primary btn-sm"><i class="fa fa-plus-square"></i>&nbsp;&nbsp;Register</a></div>
                     </div>
                     <div class="card-body">
                     <?Php
@@ -139,6 +139,7 @@ include 'api/db_connection.php'; // Include your database connection
 
                                     $location_id = $row['pickupLocation_id'];
                                     $address = $row['address'];
+                                    
                                     ?>
                                     <tr>
                                         <td><?php echo $x;?></td>
@@ -146,7 +147,7 @@ include 'api/db_connection.php'; // Include your database connection
                                         <td><?php echo $address; ?></td>
                                         <td> 
                                             <a href="#" class="btn btn-info btn-sm" style="margin-top:3px; color:white;"><i class="fas fa-edit"></i> Update</a>
-                                            <a href="#" class="btn btn-danger btn-sm" style="margin-top:3px;"><i class="fas fa-trash-alt"></i> Delete</a>
+                                            <a href="function/delete-location.php?location=<?php echo $location_id; ?>" class="btn btn-danger btn-sm" style="margin-top:3px;"><i class="fas fa-trash-alt"></i> Delete</a>
                                         </td>
                                     </tr>
                                 <?php $x++;} ?>

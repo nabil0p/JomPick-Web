@@ -92,7 +92,7 @@ include 'api/db_connection.php'; // Include your database connection
                             </div>
                         </div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
-                            <div class="small text-white"><a href="staff-list.php" class="btn btn-primary btn-sm" data-toggle="modal">View Staffs</a></div>
+                            <div class="small text-white"><a href="staff-list.php" class="btn btn-primary btn-sm">View Staffs</a></div>
                             <button type="submit" class="btn btn-primary btn-sm" style="background-color: #087EA4">Register</button>
                     </form>
                 </div>

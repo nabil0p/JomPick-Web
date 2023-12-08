@@ -101,7 +101,7 @@ if ($result_item->num_rows > 0) {
                 <div class="card mb-4">
                     <div class="card-header d-flex align-items-center justify-content-between">
                         <div><i class="fas fa-table me-1"></i> JomPick List</div>
-                        <div class="small text-white"><a href="item-register.php" class="btn btn-primary btn-sm" data-toggle="modal"><i class="fa fa-plus-square"></i>&nbsp;&nbsp;Register</a></div>
+                        <div class="small text-white"><a href="item-register.php" class="btn btn-primary btn-sm"><i class="fa fa-plus-square"></i>&nbsp;&nbsp;Register</a></div>
                     </div>
                     <div class="card-body">
                     <?Php

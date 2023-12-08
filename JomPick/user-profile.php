@@ -7,6 +7,8 @@ if (!isset($_SESSION["id"])) {
     exit;
 }
 
+$user_id = $_SESSION["id"];
+
 include 'api/db_connection.php'; // Include your database connection
 
 ?>
@@ -49,10 +51,10 @@ include 'api/db_connection.php'; // Include your database connection
                     <div class="card-header d-flex align-items-center justify-content-between">
                         <div><i class="fas fa-user me-1"></i>Details</div>
                     </div>
-                    <form method="post" action="function/update_profile.php" enctype="multipart/form-data">
+                    <form method="post" action="function/update-profile.php" enctype="multipart/form-data">
                         <div class="card-body">
                              <?php
-                                    $sql = "SELECT u.*, r.rolename FROM user u JOIN role r ON u.role_id = r.role_id "; 
+                                    $sql = "SELECT u.*, r.rolename FROM user u JOIN role r ON u.role_id = r.role_id WHERE user_id = '$user_id'"; 
                                     $result = mysqli_query($conn, $sql);
                                     $row=mysqli_fetch_array($result,MYSQLI_ASSOC);
 
@@ -67,22 +69,29 @@ include 'api/db_connection.php'; // Include your database connection
                                     if($role_id == 1){
                                         $role_id = "Admin";
                                     }else if($role_id == 2){
-                                        $role_id = "Staff";
+                                        $role_id = "Manager";
                                     }else if($role_id == 3){
-                                        $role_id = "Customer";
+                                        $role_id = "Staff";
                                     }
 
                                     $mgrStaff = $row['mgrStaff'];
-
                                         if($mgrStaff == ''){
                                             $mgrStaff = "Admin";
                                         }
+                                        if($mgrStaff !== ''){
+                                            $sql1 = "SELECT userName FROM user WHERE user_id = '$mgrStaff'"; 
+                                            $result1 = mysqli_query($conn, $sql1);
+                                            $row1 = mysqli_fetch_array($result1,MYSQLI_ASSOC);
+                                            $mgrStaff = $row1['userName'];
+                                        }
+
+
                                 ?>
                             <div class="row">
                                 <div class="col-xl-3 col-md-6">
                                     <div class="form-group">
                                         <label for="username">Username:</label>
-                                        <input type="text" class="form-control" id="username" name="username" value="<?php echo $username; ?>" required>
+                                        <input type="text" class="form-control" id="username" name="username" value="<?php echo $username; ?>" required readonly>
                                     </div>
                                 </div>
                                 <div class="col-xl-3 col-md-6">
@@ -111,14 +120,14 @@ include 'api/db_connection.php'; // Include your database connection
                                 </div>
                                 <div class="col-xl-3 col-md-6">
                                     <div class="form-group">
-                                        <label for="fullname">Role</label>
-                                        <input type="text" class = "form-control" id="fullname" name="fullname" value="<?php echo $role_id; ?>" required>
+                                        <label for="role">Role</label>
+                                        <input type="text" class = "form-control" id="role" name="role" value="<?php echo $role_id; ?>" required readonly>
                                     </div>
                                 </div>
                                 <div class="col-xl-3 col-md-6">
                                     <div class="form-group">
-                                        <label for="fullname">Manager</label>
-                                        <input type="text" class = "form-control" id="fullname" name="fullname" value="<?php echo $mgrStaff; ?>" required>
+                                        <label for="manager">Manager</label>
+                                        <input type="text" class = "form-control" id="manager" name="manager" value="<?php echo $mgrStaff; ?>" required readonly>
                                     </div>
                                 </div>
                             </div>
