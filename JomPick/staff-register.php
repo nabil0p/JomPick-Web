@@ -9,6 +9,7 @@ if (!isset($_SESSION["id"])) {
 
 include 'api/db_connection.php'; // Include your database connection
 
+$userrole= $_SESSION["role_id"];
 ?>
 
 <!DOCTYPE html>
@@ -24,6 +25,19 @@ include 'api/db_connection.php'; // Include your database connection
     }
     input{
         margin-bottom:5px;
+    }
+    /* Custom styles for select */
+
+    .custom-select {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 100%;
+    }
+
+    .custom-select:focus {
+        border-color: #007bff;
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
     }
 </style>
     
@@ -89,6 +103,36 @@ include 'api/db_connection.php'; // Include your database connection
                                         <input type="text" class = "form-control" id="fullname" name="fullname" required>
                                     </div>
                                 </div>
+                                <?php
+                                    if ($userrole == '1') {
+                                        echo '<div class="col-xl-3 col-md-6">
+                                                <div class="form-group">
+                                                    <label for="userpic">Location Incharge</label>
+                                                    <select class="custom-select" id="userpic" name="userpic" required>
+                                                        <option value="">Please Select</option>';
+                                                        
+                                                        // Assuming $conn is your database connection
+                                                        $query = "SELECT user_id, userName FROM user WHERE role_id = 2;";
+                                                        $result = $conn->query($query);
+
+                                                        if ($result && $result->num_rows > 0) {
+                                                            while ($row1 = $result->fetch_assoc()) {
+                                                                $userid = $row1['user_id'];
+                                                                $userName = $row1['userName'];
+                                                                echo "<option value='$userid'>$userName</option>";
+                                                            }
+                                                        } else {
+                                                            echo "<option value='' disabled>No locations available</option>";
+                                                        }
+
+                                                        // Close the result set
+                                                        $result->close();
+                                                        
+                                        echo '</select>
+                                            </div>
+                                        </div>';
+                                    }
+                                    ?>
                             </div>
                         </div>
                         <div class="card-footer d-flex align-items-center justify-content-between">

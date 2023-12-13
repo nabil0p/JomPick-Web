@@ -8,17 +8,20 @@ if (!isset($_SESSION["id"])) {
 }
 
 $location_id = isset($_GET['location']) ? $_GET['location'] : '';
+
 $user_id = $_SESSION["id"];
+
+$location = $_POST['location'];
 
 include '../api/db_connection.php'; // Include your database connection
 
 // Insert the new user into the database with the determined role_id
-$dlt = "UPDATE pickup_location SET availability_id  = 2 WHERE pickupLocation_id = '$location_id';";
+$dlt = "UPDATE pickup_location SET address  = '$location' WHERE pickupLocation_id = '$location_id';";
 
 $aa  = mysqli_query($conn, $dlt);
 
 if ($conn->query($dlt) === TRUE) {
-    header("Location: ../location-list.php");
+    header("Location: ../location-list.php?location=");
     exit;
 } else {
     echo "Error adding user: " . $conn->error;

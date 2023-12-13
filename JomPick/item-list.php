@@ -62,38 +62,47 @@ if ($result_item->num_rows > 0) {
                     <div class="card-header d-flex align-items-center justify-content-between">
                         <div><i class="fas fa-search me-1"></i>Search</div>
                     </div>
-                    <form method="post" action="add_item.php" enctype="multipart/form-data">
+                    <form method="get" action="item-list.php" enctype="multipart/form-data">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-xl-3 col-md-6">
                                     <div class="form-group">
                                             <label for="itemid">Item ID:</label><br/>
-                                            <input type="text" class="form-control" id="itemid" name="itemid" required>
+                                            <input type="text" class="form-control" id="itemid" name="itemid">
                                     </div>
                                 </div>
                                 <div class="col-xl-3 col-md-6">
                                     <div class="form-group">
                                             <label for="name">Name:</label><br/>
-                                            <input type="text" class="form-control" id="name" name="name" required>
+                                            <input type="text" class="form-control" id="name" name="name">
                                     </div>
                                 </div>
                                 <div class="col-xl-3 col-md-6">
                                     <div class="form-group">
                                             <label for="Tnum">Tracking Number:</label><br/>
-                                            <input type="text" class="form-control" id="Tnum" name="Tnum" required>
+                                            <input type="text" class="form-control" id="Tnum" name="Tnum">
                                     </div>
                                 </div>
                                 <div class="col-xl-3 col-md-6">
                                     <div class="form-group">
                                             <label for="type">Type:</label><br/>
-                                            <input type="text" class="form-control" id="type" name="type" required>
+                                            <input type="text" class="form-control" id="type" name="type">
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="card-footer d-flex align-items-center justify-content-between">
-                            <div></div>
-                            <div class="small text-white"><a href="#!" class="btn btn-primary btn-sm"><i class="fa fa-search"></i>&nbsp;&nbsp;Search</a></div>
+                        <button type="submit" onclick="resetForm()" class="btn btn-primary btn-sm" name="carian" value="carian" id="carian"><i class="fa fa-refresh"></i>&nbsp;&nbsp;Reset</button>
+                        <script>
+                            function resetForm() {
+                                // Get the form element by its ID
+                                var form = document.getElementById("myForm");
+
+                                // Reset the form
+                                form.reset();
+                            }
+                        </script>
+                            <button type="submit" class="btn btn-primary btn-sm" name="carian" value="carian" id="carian"><i class="fa fa-search"></i>&nbsp;&nbsp;Search</button>
                         </div>
                     </form>
                 </div>
@@ -105,41 +114,36 @@ if ($result_item->num_rows > 0) {
                     </div>
                     <div class="card-body">
                     <?Php
-                        $sql = "SELECT item.*, item_type.name AS type_name FROM item LEFT JOIN item_type ON item.itemType_id = item_type.itemType_id"; 
+                        $sql = "SELECT item.*, item_type.name AS type_name FROM item LEFT JOIN item_type ON item.itemType_id = item_type.itemType_id WHERE item.jp_item_id != '' "; 
                             //filtering listing
                             if (isset($_GET['carian'])) {
                                 $itemid=$_GET['itemid'];
                                 $name=$_GET['name'];
-                                $location=$_GET['location'];
-                                $trackingNumber=$_GET['trackingNumber'];
-                                $type_name=$_GET['type_name'];
+                                $Tnum=$_GET['Tnum'];
+                                $type=$_GET['type'];
 
 
                             if($itemid!=""){
-                                $sql= $sql . " and item_id = '$itemid'";
+                                $sql= $sql . " and item.jp_item_id = '$itemid'";
                                 $statement = $sql;
                             } 
                             if($name!=""){
-                                $sql= $sql . " and name = '$name'";
+                                $sql= $sql . " and item.name = '$name'";
                                 $statement = $sql;
                             }
-                            if($location!=""){
-                                $sql= $sql . " and location = '$location'";
-                                $statement = $sql;
-                            }
-                            if($trackingNumber!=""){
-                                $sql= $sql . " and trackingNumber = '$trackingNumber'";
+                            if($Tnum!=""){
+                                $sql= $sql . " and item.trackingNumber = '$Tnum'";
                                 $statement = $sql;
                             }
 
-                            if($type_name!=""){
-                                $sql= $sql . " and fullName = '$type_name'";
+                            if($type != ""){
+                                $sql= $sql . " and item_type.name = '$type'";
                                 $statement = $sql;
                             }
                                 //$statement = $sql . " ORDER BY ord_ID DESC ";
                                 $rec_count = mysqli_num_rows($result);
                                     
-                                $sql= $sql . " ORDER BY name asc";          
+                                $sql= $sql . " ORDER BY item.name ASC LIMIT 0, 25;";          
                                 $statement = $sql;
                                 //print $sql;
                                 $result = mysqli_query($conn, $sql);
@@ -158,7 +162,7 @@ if ($result_item->num_rows > 0) {
                                 <tr>
                                     <th>Num.</th>
                                     <th>Item ID</th>
-                                    <th>Name</th>
+                                    <th>Owner Name</th>
                                     <th>Location</th>
                                     <th>Image</th>
                                     <th>Tracking number</th>
@@ -170,7 +174,7 @@ if ($result_item->num_rows > 0) {
                                 <tr>
                                     <th>Num.</th>
                                     <th>Item ID</th>
-                                    <th>Name</th>
+                                    <th>Owner Name</th>
                                     <th>Location</th>
                                     <th>Image</th>
                                     <th>Tracking number</th>
@@ -182,7 +186,7 @@ if ($result_item->num_rows > 0) {
                                 <?php $x=1;
                                     while ($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
 
-                                    $item_id = $row['item_id'];
+                                    $item_id = $row['jp_item_id'];
                                     $name = $row['name'];
                                     $location = $row['location'];
                                     $image = $row['image'];

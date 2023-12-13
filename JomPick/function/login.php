@@ -19,10 +19,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 // Admin role
                 $_SESSION["id"] = $row["user_id"];
                 $_SESSION["username"] = $row["userName"];
+                $_SESSION["role_id"] = $row["role_id"];
+                $_SESSION["jp_location_id"] = $row["jp_location_id"];
                 header("Location: ../dashboard.php");
                 exit;
             } else {
-                header("Location: ../index.php?error=Unauthorized access");
+                header("Location: ../index.php?error=Unauthorized Access");
             }
         } 
     } else {

@@ -1,6 +1,6 @@
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
-    &nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/JomPick_logo1.jpg" alt="Logo" style="width:30px;height:30px;">
+    &nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/JomPick_logo1.jpg" alt="Logo" style="width:30px;height:30px;"/>
     <a class="navbar-brand ps-3" style="width: 190px;" href="admin_dashboard.php">JomPick</a>
     <!-- Sidebar Toggle-->
     <button class="btn btn-link btn-sm order-1 order-lg-0 me-3 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>

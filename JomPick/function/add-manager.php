@@ -18,10 +18,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $fullName = $_POST["fullname"];
     $user_id = $_SESSION["id"];
     $role_id = 2; // Set role_id to 2 Manager
+    $location = $_SESSION["location"];
 
     // Insert the new user into the database with the determined role_id
-    $sql = "INSERT INTO user (userName, password, phonenumber, icNumber, emailAddress, fullName, role_id) 
-            VALUES ('$userName', '$password', '$phoneNumber', '$icNumber', '$emailAddress', '$fullName', $role_id)";
+    $sql = "INSERT INTO user (userName, password, phonenumber, icNumber, emailAddress, fullName, role_id, jp_location_id, mgrStaff) 
+            VALUES ('$userName', '$password', '$phoneNumber', '$icNumber', '$emailAddress', '$fullName', $role_id, '$location', $user_id)";
 
     if ($conn->query($sql) === TRUE) {
         header("Location: ../staff-register.php");

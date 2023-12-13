@@ -25,6 +25,19 @@ include 'api/db_connection.php'; // Include your database connection
     input{
         margin-bottom:5px;
     }
+    /* Custom styles for select */
+
+    .custom-select {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 100%;
+    }
+
+    .custom-select:focus {
+        border-color: #007bff;
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
 </style>
     
 <body class="sb-nav-fixed">
@@ -87,6 +100,32 @@ include 'api/db_connection.php'; // Include your database connection
                                     <div class="form-group">
                                         <label for="fullname">Full Name</label>
                                         <input type="text" class = "form-control" id="fullname" name="fullname" required>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-md-6">
+                                    <div class="form-group">
+                                        <label for="location">Location Incharge</label>
+                                        <select class="custom-select" id="location" name="location" required>
+                                            <option value=''>Please Select</option>
+                                            <?php
+                                            // Assuming $conn is your database connection
+                                            $query = "SELECT pickupLocation_id, address FROM pickup_location WHERE pickupLocation_id != 1;";
+                                            $result = $conn->query($query);
+
+                                            if ($result && $result->num_rows > 0) {
+                                                while ($row = $result->fetch_assoc()) {
+                                                    $location_id = $row['pickupLocation_id'];
+                                                    $address = $row['address'];
+                                                    echo "<option value='$location_id'>$address</option>";
+                                                }
+                                            } else {
+                                                echo "<option value='' disabled>No locations available</option>";
+                                            }
+
+                                            // Close the result set
+                                            $result->close();
+                                            ?>
+                                        </select>
                                     </div>
                                 </div>
                             </div>

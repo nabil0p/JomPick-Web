@@ -82,7 +82,7 @@ include 'api/db_connection.php'; // Include your database connection
                     </div>
                     <div class="card-body">
                     <?Php
-                        $sql = "SELECT l.* FROM pickup_location l"; 
+                        $sql = "SELECT l.* FROM pickup_location l WHERE availability_id = 1 "; 
                             //filtering listing
                             if (isset($_GET['carian'])) {
                                 $locationid=$_GET['locationid'];
@@ -109,7 +109,7 @@ include 'api/db_connection.php'; // Include your database connection
 
                             }else{
                                 //set semula tanpa filtering
-                                $sql = "SELECT l.* FROM pickup_location l ORDER BY pickupLocation_id asc"; 
+                                $sql = "SELECT l.* FROM pickup_location l WHERE availability_id = 1 ORDER BY pickupLocation_id asc"; 
                                 $result = mysqli_query($conn, $sql);
                                 //print $sql;
                             }
@@ -122,6 +122,7 @@ include 'api/db_connection.php'; // Include your database connection
                                     <th>Num.</th>
                                     <th>Location ID</th>
                                     <th>Location Name</th>
+                                    <th>Image</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -130,6 +131,7 @@ include 'api/db_connection.php'; // Include your database connection
                                     <th>Num.</th>
                                     <th>Location ID</th>
                                     <th>Location Name</th>
+                                    <th>Image</th>
                                     <th>Action</th>
                                 </tr>
                             </tfoot>
@@ -139,14 +141,16 @@ include 'api/db_connection.php'; // Include your database connection
 
                                     $location_id = $row['pickupLocation_id'];
                                     $address = $row['address'];
+                                    $image = $row['image'];
                                     
                                     ?>
                                     <tr>
                                         <td><?php echo $x;?></td>
                                         <td><?php echo $location_id; ?></td>
                                         <td><?php echo $address; ?></td>
+                                        <td><img src="data:image/jpeg;base64,<?php echo htmlspecialchars(base64_encode($image), ENT_QUOTES, 'UTF-8'); ?>" width="150" height="150" /></td>
                                         <td> 
-                                            <a href="#" class="btn btn-info btn-sm" style="margin-top:3px; color:white;"><i class="fas fa-edit"></i> Update</a>
+                                            <a href="location-update.php?location=<?php echo $location_id; ?>" class="btn btn-info btn-sm" style="margin-top:3px; color:white;"><i class="fas fa-edit"></i> Update</a>
                                             <a href="function/delete-location.php?location=<?php echo $location_id; ?>" class="btn btn-danger btn-sm" style="margin-top:3px;"><i class="fas fa-trash-alt"></i> Delete</a>
                                         </td>
                                     </tr>
