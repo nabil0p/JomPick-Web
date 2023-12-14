@@ -98,16 +98,15 @@ if ($result_item->num_rows > 0) {
                                             <input type="text" class="form-control" id="ownername" name="ownername" required>
                                     </div>
                                 </div>
-                                <?php  if ($userrole == '1'){
-                                echo `<div class="col-xl-3 col-md-6">
+                                <div class="col-xl-3 col-md-6">
                                     <div class="form-group">
                                         <label for="location">Location</label>
                                         <select class="custom-select" id="location" name="location" required>
-                                            <option value=''>Please Select</option>`;
+                                            <?php  if ($userrole == '1'){
                                             // Assuming $conn is your database connection
                                             $query = "SELECT pickupLocation_id, address FROM pickup_location WHERE pickupLocation_id != 1;";
                                             $result = $conn->query($query);
-
+                                            echo "<option value=''>Please Select</option>";
                                             if ($result && $result->num_rows > 0) {
                                                 while ($row = $result->fetch_assoc()) {
                                                     $location_id = $row['pickupLocation_id'];
@@ -119,31 +118,29 @@ if ($result_item->num_rows > 0) {
                                             }
 
                                             // Close the result set
-                                            $result->close();
-                                   echo `</select>
-                                    </div>
-                                </div>`;
-                                }
-                                
-                                else if ($userrole == '2' || $userrole == '3') {
-                                    echo '<div class="col-xl-3 col-md-6">
-                                            <div class="form-group">
-                                                <label for="ex">Location:</label>';
+                                            
+                                            } else if ($userrole == '2' || $userrole == '3') {
                                 
                                                 $sql9 = "SELECT jp_location_id FROM user WHERE user_id = $userid;";
                                                 $result9 = mysqli_query($conn, $sql9);
                                                 $row9 = mysqli_fetch_array($result9, MYSQLI_ASSOC);
                                                 $location = $row9['jp_location_id'];
+                                                $result9->close();
                                 
                                                 $sql8 = "SELECT address FROM pickup_location WHERE pickupLocation_id = $location;";
                                                 $result8 = mysqli_query($conn, $sql8);
                                                 $row8 = mysqli_fetch_array($result8, MYSQLI_ASSOC);
                                                 $address = $row8['address'];
-                                
-                                                echo '<input type="text" value="' . $address . '" class="form-control" id="ex" name="ex" required readonly>
-                                            </div>
-                                        </div>';
-                                }
+                                                $result8->close();
+
+                                                echo "<option value='$location_id'>$address</option>";
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <?php
+                               
                                 ?>
                                 <div class="col-xl-3 col-md-6">
                                     <div class="form-group">

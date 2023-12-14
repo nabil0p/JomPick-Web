@@ -107,19 +107,23 @@ $location_id = $_SESSION['jp_location_id'];
                     </div>
                     <div class="card-body">
                     <?Php
+                        if ($location_id == '1'){
+                            $location_id = "'2' or c.pickupLocation_id = '3'";
+                        }
                         $sql = "SELECT
                                 im.*,
                                 u.userName AS username, 
                                 i.name AS itemname, 
                                 i.image AS image,
                                 dd.dueDate AS duedate, 
-                                c.status AS status 
+                                c.status AS status,
+                                c.pickupLocation_id AS location
                                 FROM
                                 item_management im
                                 LEFT JOIN user u ON im.userManager_id = u.user_id
                                 LEFT JOIN item i ON im.item_id = i.item_id
                                 LEFT JOIN due_date dd ON im.dueDate_id = dd.dueDate_id
-                                LEFT JOIN confirmation c ON im.confirmation_id = c.confirmation_id WHERE itemManagement_id !='' and c.pickupLocation_id = '$location_id' "; 
+                                LEFT JOIN confirmation c ON im.confirmation_id = c.confirmation_id WHERE itemManagement_id !='' and c.pickupLocation_id = $location_id"; 
 
                             //filtering listing
                             if (isset($_GET['carian'])) {
@@ -129,6 +133,7 @@ $location_id = $_SESSION['jp_location_id'];
                                 $itemmanager=$_GET['itemmanager'];
                                 $itemname=$_GET['itemname'];
                                 $status=$_GET['status'];
+                                $location=$_GET['location'];
 
 
                             if($resitid!=""){
@@ -158,6 +163,11 @@ $location_id = $_SESSION['jp_location_id'];
                                 $statement = $sql;
                             }
 
+                            if($location!=""){
+                                $sql= $sql . " and c.pickupLocation_id = $location";
+                                $statement = $sql;
+                            }
+
                                 //$statement = $sql . " ORDER BY ord_ID DESC ";
                                 $rec_count = mysqli_num_rows($result);
                                     
@@ -174,13 +184,14 @@ $location_id = $_SESSION['jp_location_id'];
                                 i.name AS itemname, -- replace 'item_name' with the actual column name in the item table
                                 i.image AS image, 
                                 dd.dueDate AS duedate, -- replace 'due_date' with the actual column name in the duedate table
-                                c.status AS status -- replace 'confirmation_status' with the actual column name in the confirmation table
+                                c.status AS status, -- replace 'confirmation_status' with the actual column name in the confirmation table
+                                c.pickupLocation_id AS location
                                 FROM
                                 item_management im
                                 LEFT JOIN user u ON im.userManager_id = u.user_id
                                 LEFT JOIN item i ON im.item_id = i.item_id
                                 LEFT JOIN due_date dd ON im.dueDate_id = dd.dueDate_id
-                                LEFT JOIN confirmation c ON im.confirmation_id = c.confirmation_id WHERE itemManagement_id !='' and c.pickupLocation_id = '$location_id' ORDER BY status desc;"; 
+                                LEFT JOIN confirmation c ON im.confirmation_id = c.confirmation_id WHERE itemManagement_id !='' and c.pickupLocation_id = $location_id  ORDER BY status desc;"; 
 
                                 $result = mysqli_query($conn, $sql);
                                 //print $sql;
@@ -195,8 +206,9 @@ $location_id = $_SESSION['jp_location_id'];
                                     <th>Resit ID</th>
                                     <th>JomPick ID</th>
                                     <th>Register Date</th>
-                                    <th>Item Manager</th>
-                                    <th>Item Name</th>
+                                    <th>Manage</th>
+                                    <th>Location</th>
+                                    <th>Owner Name</th>
                                     <th>Image</th>
                                     <th>Status</th>
                                     <th>Actions</th>
@@ -208,8 +220,9 @@ $location_id = $_SESSION['jp_location_id'];
                                     <th>Resit ID</th>
                                     <th>JomPick ID</th>
                                     <th>Register Date</th>
-                                    <th>Item Manager</th>
-                                    <th>Item Name</th>
+                                    <th>Manage</th>
+                                    <th>Location</th>
+                                    <th>Owner Name</th>
                                     <th>Image</th>
                                     <th>Status</th>
                                     <th>Actions</th>
@@ -226,6 +239,7 @@ $location_id = $_SESSION['jp_location_id'];
                                     $itemname = $row['itemname'];
                                     $image = $row['image'];
                                     $status = $row['status'];
+                                    $location = $row['location'];
 
                                     if ($status == '1') {
                                         $status = 'Picked';
@@ -245,6 +259,7 @@ $location_id = $_SESSION['jp_location_id'];
                                         <td><?php echo $jompickid; ?></td>
                                         <td><?php echo $registerdate; ?></td>
                                         <td><?php echo $username; ?></td>
+                                        <td><?php echo $location; ?></td>
                                         <td><?php echo $itemname; ?></td>
                                         <td><img src="data:image/jpeg;base64,<?php echo htmlspecialchars(base64_encode($image), ENT_QUOTES, 'UTF-8'); ?>" width="150" height="150" /></td>
                                         <td ><div style="color:<?php echo $color; ?>;"><?php echo $status; ?></div></td> 

@@ -90,7 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 $jp_payment_id = 'JPP000000001';
             }
             $paymentAmount = 0;
-            $sql2 = "INSERT INTO payment (jp_payment_id, paymentAmount, status) VALUES ('$jp_payment_id', $paymentAmount, 3);";
+            $sql2 = "INSERT INTO payment (jp_payment_id, paymentAmount, status) VALUES ('$jp_payment_id', $paymentAmount, 1);";
             $result2 = mysqli_query($conn, $sql2); 
 
             // Fetch the current maximum value from the 'due_date' table
